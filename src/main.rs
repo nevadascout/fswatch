@@ -1,11 +1,20 @@
 extern crate notify;
-use std::sync::mpsc::Receiver;
-use std::sync::mpsc::sync_channel;
-use std::thread;
 use notify::{RecommendedWatcher, Watcher};
 use std::sync::mpsc::channel;
+use std::env;
+use std::string::String;
 
 fn watch() -> notify::Result<()> {
+    let args: Vec<String> = env::args().map(|s| s.into_string().unwrap()).collect();
+
+    if args.len() > 2 {
+        if args[1] == "-c" {
+            // Check if args[2] is a valid file path
+        } else {
+            println!("Please use ./mover -c /path/to/config.json");
+        }
+    }
+
     // Create a channel to recieve the events
     let (tx, rx) = channel();
 
