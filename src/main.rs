@@ -53,9 +53,9 @@ fn watch() -> notify::Result<()> {
         match rx.recv() {
             Ok(notify::Event { path: Some(path), op: Ok(op) }) => {
                 println!("{:?} {:?}", op, path);
-                // TODO -- don't run if something last file change was within 250ms
-
-                // TODO -- wait 100ms before running to check for another change
+                // TODO -- find a way to handle large directory changes
+                // (don't spawn a new rsync process for each file added/changed)
+                // spawn a single process once all creates/copies are done
 
                 Command::new("sh").arg(command).spawn().expect("command failed!");
             }
