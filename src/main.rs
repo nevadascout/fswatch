@@ -1,4 +1,6 @@
 extern crate notify;
+extern crate timer;
+extern crate chrono;
 use notify::{RecommendedWatcher, Watcher};
 use std::sync::mpsc::channel;
 use std::env;
@@ -47,6 +49,9 @@ fn watch() -> notify::Result<()> {
     try!(watcher.watch(path));
     println!("Starting file watcher on path '{}'...", path);
 
+    let timer = timer::Timer::new();
+    let guard: timer::Guard;
+
     // This is a simple loop, but you may want to use more complex logic here,
     // for example to handle I/O.
     loop {
@@ -57,7 +62,22 @@ fn watch() -> notify::Result<()> {
                 // (don't spawn a new rsync process for each file added/changed)
                 // spawn a single process once all creates/copies are done
 
-                Command::new("sh").arg(command).spawn().expect("command failed!");
+                // TODO -- work out how to check if this is instantiated
+                if guard {
+                    // Kill the guard and stop the timer
+                    drop(guard);
+                }
+
+                // Debug
+                println!("file watch event");
+
+                guard = timer.schedule_with_delay(chrono::Duration::milliseconds(500), move || {
+                    // Callback -- start the rsync process
+                    // Command::new("sh").arg(command).spawn().expect("command failed!");
+                });
+
+                // NOTE: This function prevents the loop from looping
+                // it waits until a file watch event is detected, then loops
             }
             Err(e) => println!("watch error {}", e),
             _ => (),
