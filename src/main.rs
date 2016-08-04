@@ -5,6 +5,16 @@ use std::env;
 use std::string::String;
 
 fn watch() -> notify::Result<()> {
+
+    // TODO -- Take two args:
+    // 1. file/folder to watch
+    // 2. bash script to execute
+
+    // TODO -- Display usage message if num args != 2
+
+
+
+
     let args: Vec<String> = env::args().map(|s| s.into_string().unwrap()).collect();
 
     if args.len() > 2 {
@@ -32,6 +42,10 @@ fn watch() -> notify::Result<()> {
         match rx.recv() {
             Ok(notify::Event { path: Some(path), op: Ok(op) }) => {
                 println!("{:?} {:?}", op, path);
+                // TODO -- run command from arg 2
+                // TODO -- don't run if something last file change was within 250ms
+
+                // TODO -- wait 100ms before running to check for another change
             }
             Err(e) => println!("watch error {}", e),
             _ => (),
