@@ -1,5 +1,5 @@
 [package]
-name = "mover"
+name = "fswatch"
 version = "1.0.0"
 authors = [ "nevada_scout <joe@hvy.io>" ]
 
