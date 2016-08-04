@@ -14,16 +14,18 @@ fn watch() -> notify::Result<()> {
 
 
 
-
     let args: Vec<String> = env::args().map(|s| s.into_string().unwrap()).collect();
 
-    if args.len() > 2 {
-        if args[1] == "-c" {
-            // Check if args[2] is a valid file path
-        } else {
-            println!("Please use ./mover -c /path/to/config.json");
-        }
-    }
+    // if args.len() > 2 {
+    //     if args[1] == "-c" {
+    //         // Check if args[2] is a valid file path
+    //     } else {
+    //         println!("Please use ./mover -c /path/to/config.json");
+    //     }
+    // }
+
+    // Hardcode config file location temporarily
+    // "~/mover_config.json"
 
     // Create a channel to recieve the events
     let (tx, rx) = channel();
